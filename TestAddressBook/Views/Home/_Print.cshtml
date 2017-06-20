@@ -1,0 +1,57 @@
+﻿@model TestAddressBook.Models.Consumer
+
+<style type="text/css">
+.dl-horizontal dt {
+    float: left;
+    width: 160px;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dl-horizontal dd {
+    margin-left: 180px;
+  }    
+</style>
+
+@Html.Partial("~/Views/Shared/_PrintHead.cshtml")
+
+    <div>
+        <h4>Consumer</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Surname)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Surname)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.TelephoneNumber)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.TelephoneNumber)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+    
+        </dl>
+    </div>

@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table id="customers" class="display" width="100%" cellspacing="0">
+<table id="customers" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
@@ -26,11 +26,11 @@
             </th>
             <th></th>
         </tr>
-        </thead>
+    </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr data-id="@item.Id">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -46,22 +46,30 @@
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                    @Html.ActionLink("Print", "Print", new { id = item.Id })
                 </td>
             </tr>
         }
     </tbody>
 </table>
-    @section scripts{
+<button class="btn btn-default" id="print-btn">Print list</button>
+
+@using (Html.BeginForm("PrintList", "Home", FormMethod.Post, new { id = "print-tab", style = "display:none;" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+@section scripts{
     <script>
         $(document).ready(function () {
 
-            // DataTable cnsumers
+            // Definition of DataTable consumers
             var table = $('#customers').DataTable({
                 "processing": true,
                 "paging": true,
                 "deferRender": true,
-                "language":{
+                "language": {
                     "sEmptyTable": "No data available in table",
                     "sInfo": "Showing _START_ to _END_ of _TOTAL_ customers",
                     "sInfoEmpty": "Showing 0 to 0 of 0 customers",
@@ -85,7 +93,14 @@
                 "aaSorting": [[1, "asc"]]
             });
 
-            // Search in consumers
+            // Open details on table row click
+            $('#customers tbody').on('click', 'tr', function () {
+                var  data = $(this).data('id');
+                window.location = '@Url.Action("Details", "Home", new { id = "---" })'.replace("---", data);
+
+            });
+
+            // Search in consumers action
             table.columns().every(function () {
                 var that = this;
 
@@ -97,6 +112,19 @@
                     }
                 });
             });
+
+            // Print button action
+            $('#print-btn').on('click', function (e) {
+                var form = $('#print-tab');
+                $("#print-tab input[name='ids[]'").remove();
+                var elementList = $('#customers tbody>tr');
+                if (elementList.length) {
+                    elementList.each(function (index, item) {
+                        form.append('<input type="hidden" name="ids[]" value="' + $(item).data('id') + '">');
+                    });
+                }
+                form.submit();
+            });
         });
-        </script>
-    }
+    </script>
+}

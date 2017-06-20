@@ -9,7 +9,7 @@ namespace TestAddressBook.Models
     public class ApplicationDbContext : DbContext
     {
 
-        public ApplicationDbContext() : base("name=DefaultConnection")
+        public ApplicationDbContext() : base("name=TestAddressBookDbConnection")
         {
 
         }
